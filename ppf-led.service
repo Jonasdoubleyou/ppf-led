@@ -1,0 +1,14 @@
+[Unit]
+Description=Parkplatzfest LEDs
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/ppf-leds.py
+User=root
+Environment="PYTHONPATH=/home/pi/.local/lib/python3.7/site-packages"
+
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+
