@@ -27,6 +27,58 @@ LETTER_K = range(150, 190)
 
 LETTERS = [ LETTER_D, LETTER_R, LETTER_I, LETTER_N, LETTER_K ]
 
+def fromOffset(offset, ranges):
+    return [ [ it + offset for it in range ] for range in ranges ]
+
+# vertical letter slices:
+D_COLS = fromOffset(104, [
+    range(19, 31),
+    (32, 18),
+    (33, 17), 
+    (34, 16),
+    (35, 12),
+    (36, 11),
+    (37, 10),
+    (1, 9),
+    (2, 8),
+    (3, 7),
+    (4, 5, 6)
+])
+
+R_COLS = fromOffset(69, [
+    range(24, 36),
+    (9, 10, 23),
+    (8, 11, 22),
+    (7, 6, 12, 21),
+    (5, 13, 20),
+    (4, 14, 19),
+    (3, 15, 18),
+    (2, 1, 16, 17)
+])
+
+I_COLS = [ LETTER_I ]
+
+N_COLS = fromOffset(-1, [
+    range(27, 39),
+    (26,), (25,), (24,), (23,), (22,), (21,), (20,), (19,), (18,), (17,), (16,), (15,), (14,), (13,),
+    range(1, 13)
+])
+
+K_COLS = fromOffset(149, [
+    range(1,14),
+    (29, 30),
+    (28, 31),
+    (27, 32),
+    (26, 33),
+    (25, 34),
+    (24, 35),
+    (23, 36),
+    (22, 37),
+    (21, 38)
+])
+
+LETTER_COLS = D_COLS + R_COLS + I_COLS + N_COLS + K_COLS;
+
 # common colors:
 WHITE = Color(255, 255, 255)
 BLACK = Color(0, 0, 0)
@@ -80,12 +132,14 @@ class LEDService:
             while True:
                 print(" ----- BEGIN LOOP ----- ")
                 
-                self.scene_1()
-                self.scene_2()
-                self.scene_3()
-                self.scene_4()
-                self.scene_5()
+                # self.scene_1()
+                # self.scene_2()
+                # self.scene_3()
+                # self.scene_4()
+                # self.scene_5()
                 
+                self.scene_6()
+
                 print(" ----- END   LOOP ----- ")
 
         except KeyboardInterrupt:
@@ -174,18 +228,26 @@ class LEDService:
 
     # Strobo
     def scene_5(self):
-        print(" + SCENE 5")
+       print (" + SCENE 5")
 
-        for letter in LETTERS:
+       for letter in LETTERS:
             self.set(letter, WHITE)
             self.sleep_second()
             self.set(letter, BLACK)
             self.sleep_second()
 
-        for iteration in range(0, 10):
+       for iteration in range(0, 10):
             self.set_all(WHITE)
             self.sleep_short()
             self.set_all(BLACK)
+            self.sleep_short()
+
+    # Rainbow moving
+    def scene_6(self):
+        print (" + SCENE 6")
+        for offset in range(0, 255):
+            for pos in range(0, len(LETTER_COLS)):
+                self.set(LETTER_COLS[pos], self.color_wheel(pos+offset))
             self.sleep_short()
 
     
@@ -199,7 +261,7 @@ class LEDService:
         self.strip.show()
    
     def set(self, led_or_range, color):
-        if type(led_or_range) is range:
+        if type(led_or_range) is range or type(led_or_range) is list:
             self.set_range(led_or_range, color)
         else:
             self.set_led(led_or_range, color)
@@ -208,7 +270,10 @@ class LEDService:
         self.strip.setPixelColor(led, color)
 
     def set_range(self, led_range, color):
-        print("  + set range (" + str(led_range[0]) + ", " + str(led_range[1]) + ") to color " + str(color))
+        if type(led_range) is range:
+            print("  + set range (" + str(led_range[0]) + ", " + str(led_range[1]) + ") to color " + str(color))
+        else:
+            print("  + set list (" + " ".join(map(str, led_range)) + ") to color " + str(color))
 
         for led in led_range:
             self.strip.setPixelColor(led, color)
