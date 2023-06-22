@@ -1,3 +1,4 @@
+
 # Parkplatfest LEDs
 # Author: Jonas Wilms, 2.OG D7, 2023
 #
@@ -10,7 +11,7 @@ from rpi_ws281x import *
 
 
 # LED strip configuration:
-LED_COUNT      = 150      # Number of LED pixels.
+LED_COUNT      = 150 + 50      # Number of LED pixels.
 LED_PIN        = 12       # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
@@ -18,14 +19,13 @@ LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 
 # Letter configuration:
-LETTER_D = range(0, 10)
-LETTER_R = range(10, 20)
-LETTER_I = range(20, 30)
-LETTER_N = range(30, 40)
-LETTER_K = range(40, 50)
-LETTER_S = range(50, 60)
+LETTER_D = range(105, 140)
+LETTER_R = range(70, 105)
+LETTER_I = range(40, 70)
+LETTER_N = range(0, 39)
+LETTER_K = range(150, 190)
 
-LETTERS = [ LETTER_D, LETTER_R, LETTER_I, LETTER_N, LETTER_K, LETTER_S ]
+LETTERS = [ LETTER_D, LETTER_R, LETTER_I, LETTER_N, LETTER_K ]
 
 # common colors:
 WHITE = Color(255, 255, 255)
@@ -58,6 +58,11 @@ class LEDService:
         print(" - Shutdown handler attached to SIGTERM")
 
         print(" ----- END   SETUP  ----- ")
+        
+        # self.set(LETTER_N, WHITE)
+        # self.set(LETTER_R, RED)
+        # self.set(LETTER_K, BLUE)
+        # self.flush()
         
         self.run_loop()
 
