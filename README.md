@@ -13,8 +13,12 @@ This repo is slightly inspired by [this tutorial](https://tutorials-raspberrypi.
 
 Attach a power supply to the Raspi (i.e. via Micro USB). Attach the 5V+ and GND (ground) of the LED stripes to +/- of the power supply
  (this ensures that the LEDs have a stable power supply, as the Raspis output pins might not have enough ampere).
+If the power supply is blinking, there is a short circuit between 5V+ and GND, fix your wiring ...
+
 Attach GND of the LED stripes to a GND pin of the Raspi, also attach the DIN (Data In) of the LED stripes to a GPIO port of the Raspi that supports PWM
- (i.e. for the Pi 3A+ the fifth pin from the upper left). 
+ (i.e. for the Pi 3A+ the fifth pin from the upper left - so port 32).
+Note that we use the GPIO numbering, NOT the WiringPi numbering (which is also called "GPIO" in many places).
+See [pinout.xyz](https://pinout.xyz/). 
 
 Clone this Repo into the home directory of the "pi" user. Install Python 3 and Pip. Then run 
 
